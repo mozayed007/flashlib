@@ -1,0 +1,31 @@
+# FlashLib — full dependency list for development and learning
+#
+# Install with:  pip install -r requirements.txt
+# Or use conda:  conda env create -f environment.yml (if provided)
+#
+# GPU required: NVIDIA GPU with compute capability 8.0+ (A100, H100, H200,
+# RTX 3090, RTX 4090, L4, etc.).  Phase 0 (infrastructure verification)
+# works on CPU.  Phases 1-8 require a CUDA GPU.
+
+# ── Core (flashlib runtime) ──────────────────────────────────────────
+torch>=2.0
+triton>=3.6
+numpy
+numba
+tqdm
+
+# ── CuteDSL backends (Hopper-only) ──────────────────────────────────
+nvidia-cutlass-dsl
+
+# ── TileLang backend ─────────────────────────────────────────────────
+tilelang>=0.1.6
+
+# ── Development / testing ────────────────────────────────────────────
+pytest>=7
+scikit-learn>=1.5,<1.8
+
+# ── Benchmarks (optional) ────────────────────────────────────────────
+matplotlib
+
+# ── Modal H100 access (optional — only if you don't have a local GPU) ─
+modal

@@ -4,17 +4,33 @@
 
 You are porting 15 FlashLib ML primitives from Triton to TileLang. The goal is to learn TileLang by writing real GPU kernels — not toy examples.
 
-## GPU Requirements
+## Setup
 
-TileLang needs an NVIDIA GPU (sm_80+) to compile and run kernels. You have two options:
+**Prerequisites:**
+- Python 3.9+
+- NVIDIA GPU with compute capability 8.0+ (A100, H100, H200, RTX 3090, RTX 4090, L4, etc.)
+- CUDA toolkit
 
-**Option A — Modal (recommended for beginners):**
-Sign up at https://modal.com and install the CLI (`pip install modal`). The branch includes ready-to-use Modal scripts for H100 access. Free tier includes some credits; H100 costs $3.95/hr. See `modal-workflow.md` for details.
+**Install dependencies:**
 
-**Option B — Your own GPU:**
-Any NVIDIA GPU with compute capability 8.0+ works (A100, H100, H200, RTX 3090, RTX 4090, L4, etc.). Install tilelang (`pip install tilelang`) and run tests locally.
+```bash
+# Option A — pip (venv)
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+pip install -r requirements.txt
 
-Phase 0 (infrastructure verification) does not need a GPU. Phases 1–8 require one.
+# Option B — conda
+conda create -n flashlib-tilelang python=3.11
+conda activate flashlib-tilelang
+pip install -r requirements.txt
+
+# Option C — install flashlib in editable mode (recommended for development)
+pip install -e ".[tilelang,dev]"
+```
+
+Phase 0 (infrastructure verification) works on CPU. Phases 1–8 require a CUDA GPU.
+
+**No local GPU?** You can use Modal (https://modal.com) for cloud H100 access. The branch includes ready-to-run Modal scripts. See `modal-workflow.md` for details.
 
 ## How to Use These Docs
 
@@ -24,7 +40,7 @@ Read in this order:
 2. `tilelang-api.md` — TileLang API reference (read before Phase 1)
 3. `flashlib-architecture.md` — how FlashLib's multi-backend system works
 4. `how-to-port-a-primitive.md` — the porting recipe (reference during all phases)
-5. `modal-workflow.md` — how to use Modal H100
+5. `modal-workflow.md` — how to use Modal H100 (skip if using your own GPU)
 6. `debugging.md` — when something breaks
 
 Then follow the phase guides in order:
@@ -43,19 +59,19 @@ phase-8-benchmarks.md     Benchmarking + route heuristic updates
 
 ## Phase Summary
 
-| Phase | What You Build | GPU Hours | Cost |
-|-------|---------------|-----------|------|
-| 0 | Verify infrastructure | 0.9 | $3.56 |
-| 1 | KMeans TileLang kernel | 3.0 | $11.85 |
-| 2 | KNN TileLang kernel | 4.0 | $15.80 |
-| 3 | PCA + Truncated SVD | 2.6 | $10.27 |
-| 4 | GEMM variants | 3.5 | $13.83 |
-| 5 | 10 remaining primitives | 9.0 | $35.55 |
-| 6 | Dispatcher polish | 1.4 | $5.53 |
-| 7 | Parity tests | 4.6 | $18.17 |
-| 8 | Benchmarks | 6.4 | $25.28 |
-| Buffer | Debugging | 8.0 | $31.60 |
-| **Total** | | **43.4** | **$171.44** |
+| Phase | What You Build | Est. GPU Hours |
+|-------|---------------|----------------|
+| 0 | Verify infrastructure | ~1 |
+| 1 | KMeans TileLang kernel | ~3 |
+| 2 | KNN TileLang kernel | ~4 |
+| 3 | PCA + Truncated SVD | ~3 |
+| 4 | GEMM variants | ~4 |
+| 5 | 10 remaining primitives | ~9 |
+| 6 | Dispatcher polish | ~1 |
+| 7 | Parity tests | ~5 |
+| 8 | Benchmarks | ~6 |
+| Buffer | Debugging | ~8 |
+| **Total** | | **~44** |
 
 ## Quick Reference
 
@@ -63,20 +79,17 @@ phase-8-benchmarks.md     Benchmarking + route heuristic updates
 # Verify Phase 0 (no GPU needed)
 python -c "from flashlib._tilelang import _try_init_tilelang; print(_try_init_tilelang())"
 
-# Run test on Modal H100
-modal run scripts/modal/run_test.py --path tests/test_tilelang_parity.py -k test_kmeans
-
-# Run test locally (if you have a GPU)
+# Run tests locally
 pytest tests/test_tilelang_parity.py -k test_kmeans -v
 
-# Interactive H100 shell (Modal)
+# Run tests on Modal H100
+modal run scripts/modal/run_test.py --path tests/test_tilelang_parity.py -k test_kmeans
+
+# Interactive shell on Modal H100
 modal run scripts/modal/shell.py
 
-# Benchmark (Modal)
+# Benchmark on Modal
 modal run scripts/modal/bench_primitive.py --primitive kmeans
-
-# Check Modal budget
-# https://modal.com/settings/usage
 ```
 
 ## Key Concepts
