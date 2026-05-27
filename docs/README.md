@@ -4,7 +4,17 @@
 
 You are porting 15 FlashLib ML primitives from Triton to TileLang. The goal is to learn TileLang by writing real GPU kernels — not toy examples.
 
-**Budget:** 72 hours on Modal H100 ($3.95/hr).
+## GPU Requirements
+
+TileLang needs an NVIDIA GPU (sm_80+) to compile and run kernels. You have two options:
+
+**Option A — Modal (recommended for beginners):**
+Sign up at https://modal.com and install the CLI (`pip install modal`). The branch includes ready-to-use Modal scripts for H100 access. Free tier includes some credits; H100 costs $3.95/hr. See `modal-workflow.md` for details.
+
+**Option B — Your own GPU:**
+Any NVIDIA GPU with compute capability 8.0+ works (A100, H100, H200, RTX 3090, RTX 4090, L4, etc.). Install tilelang (`pip install tilelang`) and run tests locally.
+
+Phase 0 (infrastructure verification) does not need a GPU. Phases 1–8 require one.
 
 ## How to Use These Docs
 
@@ -50,19 +60,22 @@ phase-8-benchmarks.md     Benchmarking + route heuristic updates
 ## Quick Reference
 
 ```bash
-# Verify Phase 0
+# Verify Phase 0 (no GPU needed)
 python -c "from flashlib._tilelang import _try_init_tilelang; print(_try_init_tilelang())"
 
-# Run test on H100
+# Run test on Modal H100
 modal run scripts/modal/run_test.py --path tests/test_tilelang_parity.py -k test_kmeans
 
-# Interactive H100 shell
+# Run test locally (if you have a GPU)
+pytest tests/test_tilelang_parity.py -k test_kmeans -v
+
+# Interactive H100 shell (Modal)
 modal run scripts/modal/shell.py
 
-# Benchmark
+# Benchmark (Modal)
 modal run scripts/modal/bench_primitive.py --primitive kmeans
 
-# Check budget
+# Check Modal budget
 # https://modal.com/settings/usage
 ```
 
