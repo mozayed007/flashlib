@@ -16,7 +16,7 @@ authors = [
 maintainers = [
     {name = "Shuo Yang", email = "andy_yang@berkeley.edu"},
 ]
-keywords = ["triton", "cutedsl", "gpu", "machine-learning", "kmeans", "knn", "pca", "dbscan", "hdbscan", "umap", "cuml"]
+keywords = ["triton", "cutedsl", "tilelang", "gpu", "machine-learning", "kmeans", "knn", "pca", "dbscan", "hdbscan", "umap", "cuml"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -40,6 +40,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+tilelang = ["tilelang>=0.1.6"]
 dev = ["pytest>=7", "scikit-learn>=1.5,<1.8", "tqdm"]
 bench = [
     "scikit-learn>=1.5,<1.8",

@@ -23,6 +23,9 @@ cutedsl_available = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_ridge_regression = lazy_attr("flashlib.primitives.ridge.tilelang", "tilelang_ridge_regression")
+
 __all__ = [
     "flash_ridge",
     "flash_ridge_regression",

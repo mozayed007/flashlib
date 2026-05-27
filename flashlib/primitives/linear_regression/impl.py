@@ -28,4 +28,8 @@ def flash_linear_regression(
     """
     if backend == "cutedsl":
         return cutedsl_linear_regression(X, y, n_refine=n_refine, tol=tol or 1e-3)
+    # TODO: Phase 3 — add TileLang backend
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.linear_regression.tilelang import tilelang_linear_regression
+    #       return tilelang_linear_regression(X, y, n_refine=n_refine, tol=tol)
     return triton_linear_regression(X, y, n_refine=n_refine, tol=tol)

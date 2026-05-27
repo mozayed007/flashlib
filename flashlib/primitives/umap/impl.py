@@ -44,6 +44,12 @@ def flash_umap(
             n_neg_samples=n_neg_samples, seed=seed,
             return_graph=return_graph,
         )
+    # TODO: Phase 5 — add TileLang backend (stub delegates to Triton)
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.umap.tilelang import tilelang_flash_umap
+    #       return tilelang_flash_umap(X, n_neighbors=n_neighbors, n_components=n_components,
+    #           n_epochs=n_epochs, learning_rate=learning_rate, spread=spread, min_dist=min_dist,
+    #           n_neg_samples=n_neg_samples, seed=seed, return_graph=return_graph)
     return triton_flash_umap(
         X,
         n_neighbors=n_neighbors, n_components=n_components,

@@ -48,6 +48,9 @@ cutedsl_row_l2_normalize = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_spectral_clustering = lazy_attr("flashlib.primitives.spectral_clustering.tilelang", "tilelang_spectral_clustering")
+
 __all__ = [
     "flash_spectral_clustering",
     "triton_spectral_clustering",

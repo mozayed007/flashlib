@@ -26,6 +26,9 @@ CuteDSLRandomForestClassifier = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_random_forest = lazy_attr("flashlib.primitives.random_forest.tilelang", "tilelang_random_forest")
+
 __all__ = [
     "flash_random_forest",
     "FlashRandomForestClassifier",

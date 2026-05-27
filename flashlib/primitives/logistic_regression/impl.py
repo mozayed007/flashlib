@@ -47,6 +47,10 @@ def flash_logistic_regression(
         return cutedsl_logistic_regression(
             X, y, n_iter=n_iter, lr=lr, C=C, gtol=gtol, m_lbfgs=m_lbfgs,
         )
+    # TODO: Phase 5 — add TileLang backend
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.logistic_regression.tilelang import tilelang_logistic_regression
+    #       return tilelang_logistic_regression(X, y, n_iter=n_iter, lr=lr, C=C, gtol=gtol, m_lbfgs=m_lbfgs)
     return triton_logistic_regression(
         X, y,
         n_iter=n_iter, lr=lr, C=C, gtol=gtol, m_lbfgs=m_lbfgs,

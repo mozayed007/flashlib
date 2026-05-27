@@ -38,4 +38,8 @@ def flash_pca(
     """
     if backend == "cutedsl":
         return flash_pca_cutedsl(X, K)
+    # TODO: Phase 3 — add TileLang backend
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.pca.tilelang import tilelang_pca
+    #       return tilelang_pca(X, K, tol=tol)
     return triton_pca(X, K, tol=tol)

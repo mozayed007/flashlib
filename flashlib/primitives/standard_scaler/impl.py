@@ -27,6 +27,11 @@ def _use_cutedsl(backend: Optional[str]) -> bool:
     return backend == "cutedsl" and bool(cutedsl_available())
 
 
+# TODO: Phase 3 — add TileLang helper
+#   def _use_tilelang(backend: Optional[str]) -> bool:
+#       return backend == "tilelang" and bool(tilelang_available())
+
+
 def flash_standard_scaler_fit(
     X: torch.Tensor,
     *,
@@ -35,6 +40,10 @@ def flash_standard_scaler_fit(
 ):
     if _use_cutedsl(backend):
         return cutedsl_standard_scaler_fit(X)
+    # TODO: Phase 3 — add TileLang backend
+    #   if _use_tilelang(backend):
+    #       from flashlib.primitives.standard_scaler.tilelang import tilelang_standard_scaler_fit
+    #       return tilelang_standard_scaler_fit(X)
     return triton_standard_scaler_fit(X, fused=fused)
 
 
@@ -47,6 +56,10 @@ def flash_standard_scaler_transform(
 ):
     if _use_cutedsl(backend):
         return cutedsl_standard_scaler_transform(X, mean, inv_std)
+    # TODO: Phase 3 — add TileLang backend
+    #   if _use_tilelang(backend):
+    #       from flashlib.primitives.standard_scaler.tilelang import tilelang_standard_scaler_transform
+    #       return tilelang_standard_scaler_transform(X, mean, inv_std)
     return triton_standard_scaler_transform(X, mean, inv_std)
 
 
@@ -57,6 +70,10 @@ def flash_standard_scaler_fit_transform(
 ):
     if _use_cutedsl(backend):
         return cutedsl_standard_scaler_fit_transform(X)
+    # TODO: Phase 3 — add TileLang backend
+    #   if _use_tilelang(backend):
+    #       from flashlib.primitives.standard_scaler.tilelang import tilelang_standard_scaler_fit_transform
+    #       return tilelang_standard_scaler_fit_transform(X)
     return triton_standard_scaler_fit_transform(X)
 
 

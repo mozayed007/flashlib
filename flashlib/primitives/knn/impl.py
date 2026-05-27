@@ -72,13 +72,17 @@ def _route(
     hw = hw or _hw.current()
     if not hw.is_cuda:
         return "torch"
+    # TODO: Phase 3 — add TileLang routing
+    #   if hw.sm_arch >= 80 and ...:
+    #       return "tilelang"
     return "triton"
 
 
 _OP_NAME = {
-    "triton":  "knn_triton",
-    "cutedsl": "knn_cutedsl_fa3",
-    "torch":   "knn_torch",
+    "triton":   "knn_triton",
+    "cutedsl":  "knn_cutedsl_fa3",
+    "tilelang": "knn_tilelang",
+    "torch":    "knn_torch",
 }
 
 
@@ -187,6 +191,10 @@ def flash_knn_dispatch(
 
     if chosen == "cutedsl":
         idxs = cutedsl_flash_knn(x_p, c_p, k, **kwargs)
+    # TODO: Phase 2 — add TileLang backend
+    #   elif chosen == "tilelang":
+    #       from flashlib.primitives.knn.tilelang import tilelang_flash_knn
+    #       idxs = tilelang_flash_knn(x_p, c_p, k, **kwargs)
     else:
         idxs = flash_knn_triton(x_p, c_p, k, **kwargs)
 

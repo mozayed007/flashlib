@@ -28,6 +28,9 @@ cutedsl_available = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_tsne = lazy_attr("flashlib.primitives.tsne.tilelang", "tilelang_tsne")
+
 __all__ = [
     "flash_tsne",
     "triton_tsne",

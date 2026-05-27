@@ -13,6 +13,7 @@ def diagnose() -> None:
     print(f"  python:  {sys.version.split()[0]}")
     print(f"  torch:   {_safe_version('torch')}")
     print(f"  triton:  {_safe_version('triton')}")
+    print(f"  tilelang:{_safe_version('tilelang')}")
     print(f"  numpy:   {_safe_version('numpy')}")
     print()
     _print_cuda_info()

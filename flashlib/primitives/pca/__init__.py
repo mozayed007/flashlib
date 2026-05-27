@@ -25,6 +25,9 @@ cutedsl_gram_gemm = lazy_attr("flashlib.primitives.pca.cutedsl", "cutedsl_gram_g
 flash_pca_cutedsl = lazy_attr("flashlib.primitives.pca.cutedsl", "flash_pca_cutedsl")
 
 
+# TODO: Phase 3 — add TileLang lazy imports
+#   tilelang_pca = lazy_attr("flashlib.primitives.pca.tilelang", "tilelang_pca")
+
 __all__ = [
     "flash_pca",
     "triton_pca",

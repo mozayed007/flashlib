@@ -64,4 +64,8 @@ def flash_truncated_svd(
     chosen = _resolve_backend(N, D, tol=tol, backend=backend)
     if chosen == "cutedsl":
         return cutedsl_truncated_svd(X, K)
+    # TODO: Phase 3 — add TileLang backend
+    #   if chosen == "tilelang":
+    #       from flashlib.primitives.truncated_svd.tilelang import tilelang_truncated_svd
+    #       return tilelang_truncated_svd(X, K, tol=tol)
     return triton_truncated_svd(X, K, tol=tol)

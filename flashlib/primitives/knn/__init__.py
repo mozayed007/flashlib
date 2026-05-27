@@ -46,6 +46,9 @@ cutedsl_flash_knn = lazy_attr(
 )
 
 
+# TODO: Phase 2 — add TileLang lazy imports
+#   tilelang_flash_knn = lazy_attr("flashlib.primitives.knn.tilelang", "tilelang_flash_knn")
+
 __all__ = [
     "flash_knn",
     "flash_knn_dispatch",

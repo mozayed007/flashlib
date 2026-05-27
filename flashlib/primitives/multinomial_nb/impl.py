@@ -46,6 +46,13 @@ def flash_multinomial_nb(
             alpha=alpha,
             predict_dtype=predict_dtype or "bf16",
         )
+    # TODO: Phase 3 — add TileLang backend
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.multinomial_nb.tilelang import tilelang_multinomial_nb
+    #       return tilelang_multinomial_nb(
+    #           X_train, y_train, X_test, n_classes,
+    #           alpha=alpha, predict_dtype=predict_dtype, tol=tol,
+    #       )
     return triton_multinomial_nb(
         X_train, y_train, X_test, n_classes,
         alpha=alpha,

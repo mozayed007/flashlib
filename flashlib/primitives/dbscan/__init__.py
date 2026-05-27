@@ -20,6 +20,9 @@ cutedsl_grid_radius_search = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_dbscan = lazy_attr("flashlib.primitives.dbscan.tilelang", "tilelang_dbscan")
+
 __all__ = [
     "flash_dbscan",
     "cutedsl_dbscan",

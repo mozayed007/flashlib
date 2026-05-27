@@ -28,6 +28,9 @@ cutedsl_available = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_flash_umap = lazy_attr("flashlib.primitives.umap.tilelang", "tilelang_flash_umap")
+
 __all__ = [
     "flash_umap",
     "cutedsl_flash_umap",

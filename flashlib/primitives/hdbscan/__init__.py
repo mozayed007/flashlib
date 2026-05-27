@@ -25,6 +25,9 @@ cutedsl_fused_mrd_edges = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_hdbscan = lazy_attr("flashlib.primitives.hdbscan.tilelang", "tilelang_hdbscan")
+
 __all__ = [
     "flash_hdbscan",
     "flash_hdbscan_sparse",

@@ -92,6 +92,9 @@ def _route(
         and D % 16 == 0
     ):
         return "cutedsl", variant or "fa3"
+    # TODO: Phase 3 — add TileLang routing
+    #   if hw.sm_arch >= 80 and ...:
+    #       return "tilelang", variant
     return "triton", variant
 
 
@@ -153,6 +156,13 @@ def flash_kmeans(
             x_b, n_clusters, max_iters=max_iters, tol=tol,
             init_centroids=init_centroids, verbose=verbose, **kwargs,
         )
+    # TODO: Phase 3 — add TileLang backend
+    #   elif chosen == "tilelang":
+    #       from flashlib.primitives.kmeans.tilelang import tilelang_kmeans
+    #       cluster_ids, centroids, n_iter = tilelang_kmeans(
+    #           x_b, n_clusters, max_iters=max_iters, tol=tol,
+    #           init_centroids=init_centroids, verbose=verbose, **kwargs,
+    #       )
     else:
         if metric == "euclidean":
             cluster_ids, centroids, n_iter = batch_kmeans_Euclid(

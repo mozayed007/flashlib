@@ -35,7 +35,13 @@ def flash_tsne(
     The CuteDSL path only accelerates the P-matrix step today; both
     backends currently fall through to the Triton SGD loop.
     """
-    del backend  # CuteDSL path intentionally not yet wired in.
+    # TODO: Phase 5 — add TileLang backend (stub delegates to Triton)
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.tsne.tilelang import tilelang_tsne
+    #       return tilelang_tsne(X, n_iter=n_iter, lr=lr, perplexity=perplexity,
+    #           early_exag_iters=early_exag_iters, ee_factor=ee_factor, seed=seed)
+    # del backend  # TODO: remove when TileLang is wired in
+
     return triton_tsne(
         X, n_iter=n_iter, lr=lr, perplexity=perplexity,
         early_exag_iters=early_exag_iters, ee_factor=ee_factor, seed=seed,

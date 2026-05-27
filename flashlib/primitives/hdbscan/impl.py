@@ -47,6 +47,10 @@ def flash_hdbscan(
     """
     if backend == "cutedsl":
         return cutedsl_hdbscan(X, min_cluster_size, min_samples, k=k, tol=tol)
+    # TODO: Phase 5 — add TileLang backend (stub delegates to Triton)
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.hdbscan.tilelang import tilelang_hdbscan
+    #       return tilelang_hdbscan(X, min_cluster_size, min_samples, k=k, tol=tol)
     return triton_hdbscan(
         X, min_cluster_size, min_samples,
         approximate=approximate, prefer=prefer, k=k, tol=tol,

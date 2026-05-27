@@ -42,6 +42,11 @@ def flash_spectral_clustering(
             n_power_iter=n_power_iter,
             seed=seed,
         )
+    # TODO: Phase 5 — add TileLang backend
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.spectral_clustering.tilelang import tilelang_spectral_clustering
+    #       return tilelang_spectral_clustering(X, n_clusters=n_clusters, n_neighbors=n_neighbors,
+    #           n_components=n_components, n_power_iter=n_power_iter, seed=seed)
     return triton_flash_spectral(
         X,
         n_clusters=n_clusters,

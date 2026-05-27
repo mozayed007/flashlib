@@ -5,6 +5,11 @@ All Triton kernels (and their direct python wrappers) live under
 ``flashlib.primitives.random_forest.triton.rf_kernels``; this module
 imports them and composes the high-level training / inference loops.
 """
+# TODO: Phase 5 — TileLang integration
+#   random_forest has no dispatcher (direct class). The TileLang backend
+#   is a module-level function in tilelang/random_forest.py that delegates
+#   to this class. See flashlib/primitives/random_forest/tilelang/__init__.py
+
 import math
 import numpy as np
 import torch

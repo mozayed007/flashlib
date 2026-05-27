@@ -30,6 +30,11 @@ cutedsl_available = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_standard_scaler_fit = lazy_attr("flashlib.primitives.standard_scaler.tilelang", "tilelang_standard_scaler_fit")
+#   tilelang_standard_scaler_transform = lazy_attr("flashlib.primitives.standard_scaler.tilelang", "tilelang_standard_scaler_transform")
+#   tilelang_standard_scaler_fit_transform = lazy_attr("flashlib.primitives.standard_scaler.tilelang", "tilelang_standard_scaler_fit_transform")
+
 __all__ = [
     "flash_standard_scaler",
     "flash_standard_scaler_fit",

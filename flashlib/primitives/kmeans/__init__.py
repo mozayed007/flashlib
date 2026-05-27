@@ -60,6 +60,10 @@ cutedsl_kmeans_Euclid = lazy_attr(
 )
 
 
+# TODO: Phase 1 — add TileLang lazy imports
+#   tilelang_assign_euclid = lazy_attr("flashlib.primitives.kmeans.tilelang", "tilelang_assign_euclid")
+#   tilelang_kmeans_Euclid = lazy_attr("flashlib.primitives.kmeans.tilelang", "tilelang_kmeans_Euclid")
+
 __all__ = [
     "flash_kmeans",
     "flash_kmeans_triton",

@@ -36,6 +36,10 @@ def flash_ridge_regression(
     """
     if backend == "cutedsl":
         return cutedsl_ridge_regression(X, y, alpha=alpha, n_refine=n_refine)
+    # TODO: Phase 3 — add TileLang backend
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.ridge.tilelang import tilelang_ridge_regression
+    #       return tilelang_ridge_regression(X, y, alpha=alpha, tol=tol, n_refine=n_refine)
     return triton_ridge_regression(X, y, alpha=alpha, tol=tol, n_refine=n_refine)
 
 

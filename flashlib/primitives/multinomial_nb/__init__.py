@@ -37,6 +37,9 @@ cutedsl_available = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_multinomial_nb = lazy_attr("flashlib.primitives.multinomial_nb.tilelang", "tilelang_multinomial_nb")
+
 __all__ = [
     "flash_multinomial_nb",
     "flash_multinomial_nb_fit",

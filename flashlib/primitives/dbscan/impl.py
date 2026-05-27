@@ -31,6 +31,10 @@ def flash_dbscan(
         return cutedsl_dbscan(
             X, eps=eps, min_samples=min_samples, max_neighbors=max_neighbors,
         )
+    # TODO: Phase 5 — add TileLang backend
+    #   if backend == "tilelang":
+    #       from flashlib.primitives.dbscan.tilelang import tilelang_dbscan
+    #       return tilelang_dbscan(X, eps=eps, min_samples=min_samples, max_neighbors=max_neighbors)
     return triton_dbscan(
         X, eps=eps, min_samples=min_samples,
         max_neighbors=max_neighbors, tol=tol,

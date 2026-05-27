@@ -144,6 +144,26 @@ _LAZY_ATTRS: dict[str, tuple[str, str]] = {
     # === orthonormalization ===
     "cholqr2":           ("flashlib.linalg.orthonormalize", "cholqr2"),
     "split_basis":       ("flashlib.linalg.orthonormalize", "split_basis"),
+    # === TileLang backends ===
+    # TODO: Phase 6 — add all TileLang _LAZY_ATTRS entries (uncomment when kernels are implemented)
+    # "flash_kmeans_tilelang":           ("flashlib.primitives.kmeans", "tilelang_kmeans_Euclid"),
+    # "flash_knn_tilelang":              ("flashlib.primitives.knn", "tilelang_flash_knn"),
+    # "flash_pca_tilelang":              ("flashlib.primitives.pca", "tilelang_pca"),
+    # "flash_truncated_svd_tilelang":    ("flashlib.primitives.truncated_svd", "tilelang_truncated_svd"),
+    # "flash_standard_scaler_tilelang":  ("flashlib.primitives.standard_scaler", "tilelang_standard_scaler_fit_transform"),
+    # "flash_multinomial_nb_tilelang":   ("flashlib.primitives.multinomial_nb", "tilelang_multinomial_nb"),
+    # "flash_linear_regression_tilelang":("flashlib.primitives.linear_regression", "tilelang_linear_regression"),
+    # "flash_ridge_tilelang":            ("flashlib.primitives.ridge", "tilelang_ridge_regression"),
+    # "flash_logistic_regression_tilelang": ("flashlib.primitives.logistic_regression", "tilelang_logistic_regression"),
+    # "flash_dbscan_tilelang":           ("flashlib.primitives.dbscan", "tilelang_dbscan"),
+    # "flash_spectral_clustering_tilelang": ("flashlib.primitives.spectral_clustering", "tilelang_spectral_clustering"),
+    # "flash_hdbscan_tilelang":          ("flashlib.primitives.hdbscan", "tilelang_hdbscan"),
+    # "flash_umap_tilelang":             ("flashlib.primitives.umap", "tilelang_flash_umap"),
+    # "flash_tsne_tilelang":             ("flashlib.primitives.tsne", "tilelang_tsne"),
+    # "flash_random_forest_tilelang":    ("flashlib.primitives.random_forest", "tilelang_random_forest"),
+    # "tilelang_cov_gemm":               ("flashlib.linalg.cov_gemm", "tilelang_cov_gemm"),
+    # "tilelang_gram_gemm":              ("flashlib.linalg.gram_gemm", "tilelang_gram_gemm"),
+    # "tilelang_ab_gemm":                ("flashlib.linalg.ab_gemm", "tilelang_ab_gemm"),
 }
 
 

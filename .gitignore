@@ -68,3 +68,6 @@ benchmarks/results/
 *.log
 .env
 .env.local
+
+# ── Kilo plans (machine-local) ───────────────────────────────────────
+.kilo/

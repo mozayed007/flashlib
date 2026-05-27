@@ -43,6 +43,9 @@ flash_truncated_svd_cutedsl = lazy_attr(
 )
 
 
+# TODO: Phase 3 — add TileLang lazy imports
+#   tilelang_truncated_svd = lazy_attr("flashlib.primitives.truncated_svd.tilelang", "tilelang_truncated_svd")
+
 __all__ = [
     "flash_truncated_svd",
     "triton_truncated_svd",

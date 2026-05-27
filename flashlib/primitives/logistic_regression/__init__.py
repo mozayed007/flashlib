@@ -36,6 +36,9 @@ flash_cutedsl_logistic_regression = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_logistic_regression = lazy_attr("flashlib.primitives.logistic_regression.tilelang", "tilelang_logistic_regression")
+
 __all__ = [
     "flash_logistic_regression",
     "triton_logistic_regression",

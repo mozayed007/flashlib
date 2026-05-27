@@ -23,6 +23,9 @@ cutedsl_xtx = lazy_attr(
 )
 
 
+# TODO: Phase 5 — add TileLang lazy imports
+#   tilelang_linear_regression = lazy_attr("flashlib.primitives.linear_regression.tilelang", "tilelang_linear_regression")
+
 __all__ = [
     "flash_linear_regression",
     "triton_linear_regression",
