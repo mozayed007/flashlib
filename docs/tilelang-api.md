@@ -11,29 +11,49 @@ TileLang is a Python DSL for writing GPU kernels. It compiles Python-embedded ke
 
 ## JIT Compilation
 
+TileLang has two JIT API styles (both compile to the same TIR):
+
+**Modern style (recommended — from official README):**
+
 ```python
 import tilelang
 from tilelang import T
 
-@tilelang.jit(
-    out_idx=[-1],           # which outputs to return (-1 = last)
-    pass_configs={"tl.disable_tma": True},  # optional
-)
-def my_kernel(N, D, K, BLOCK_N, BLOCK_K):
-    # Shape params (N, D, K) are symbolic at compile time
-    # Block params (BLOCK_N, BLOCK_K) are compile-time constants
+@tilelang.jit
+def my_kernel(A, B, block_M=64, block_N=64, block_K=64, dtype=T.float16):
+    M, N, K = T.const('M, N, K')
+    A: T.Tensor[[M, K], dtype]
+    B: T.Tensor[[K, N], dtype]
+    C = T.empty([M, N], dtype)
 
+    with T.Kernel(T.ceildiv(N, block_N), T.ceildiv(M, block_M), threads=128) as (bx, by):
+        A_shared = T.alloc_shared((block_M, block_K), dtype)
+        C_local = T.alloc_fragment((block_M, block_N), T.float32)
+        T.clear(C_local)
+        for ko in T.Pipelined(T.ceildiv(K, block_K), num_stages=3):
+            T.copy(A[by * block_M, ko * block_K], A_shared)
+            T.gemm(A_shared, B_shared, C_local)
+        T.copy(C_local, C[by * block_M, bx * block_N])
+    return C
+```
+
+**Older style (also works — used in some examples):**
+
+```python
+@tilelang.jit(out_idx=[-1])
+def my_kernel(N, D, K, BLOCK_N, BLOCK_K):
     @T.prim_func
     def kernel(
         X: T.Tensor[[N, D], "float16"],
         C: T.Tensor[[K, D], "float16"],
         Out: T.Tensor[[N], "int32"],
     ):
-        # Kernel body here
+        pid_n = T.get_block_binding(0)
         ...
-
     return kernel
 ```
+
+Both styles work. The kernel examples in the phase guides use the older style for simplicity. Study the official TileLang README (https://github.com/tile-ai/tilelang) for the modern pattern.
 
 **Critical:** The JIT caches by (shape, block) signature. First call per unique signature is slow (30-120s). Subsequent calls with the same args are instant.
 
@@ -82,15 +102,23 @@ T.gemm(A_shared, B_shared, C_frag)
 
 ```python
 # Serial loop (for epilogue / reduction)
-T.serial(k_start, k_end):
+for k in T.serial(K):
     body
 
-# Parallel loop (thread-level parallelism)
-T.Parallel(i_start, i_end):
+# Serial loop with explicit start/end
+for k in T.serial(start, end):
+    body
+
+# Pipelined loop (with software pipelining stages)
+for ko in T.Pipelined(T.ceildiv(K, block_K), num_stages=3):
+    body
+
+# Parallel loop (thread-level parallelism, block sizes not ranges)
+for i, j in T.Parallel(block_M, block_N):
     body
 
 # Grid-level loop (block mapping)
-# Handled by the @T.prim_func structure — each block gets a program_id
+# Handled by T.Kernel context manager — see Program IDs section
 ```
 
 ## Clear / Fill
@@ -107,7 +135,7 @@ TileLang reduction is less mature than Triton's `tl.min`/`tl.argmin`. Use serial
 
 ```python
 # Argmin over K dimension (serial)
-T.serial(k, K):
+for k in T.serial(K):
     if dist[local_i, k] < best_dist[local_i]:
         best_dist[local_i] = dist[local_i, k]
         best_idx[local_i] = k
@@ -115,12 +143,22 @@ T.serial(k, K):
 
 ## Program IDs and Block Mapping
 
+The idiomatic way to define block context is with `T.Kernel`:
+
 ```python
-@T.prim_func
-def kernel(...):
-    # Get block indices
-    pid_n = T.get_block_idx(0)  # blockIdx.x
-    pid_b = T.get_block_idx(1)  # blockIdx.y
+# Modern pattern (recommended — from official README)
+with T.Kernel(T.ceildiv(N, block_N), T.ceildiv(M, block_M), threads=128) as (bx, by):
+    # bx = blockIdx.x, by = blockIdx.y
+    n_start = by * block_M
+    m_start = bx * block_N
+```
+
+Alternative using `T.get_block_binding`:
+
+```python
+# Low-level alternative
+pid_n = T.get_block_binding(0)  # blockIdx.x
+pid_b = T.get_block_binding(1)  # blockIdx.y
 ```
 
 ## Type Annotations
@@ -177,7 +215,7 @@ T.clear(cross_frag)
 # Compute cross term: X @ C^T
 T.gemm(X_shared, C_shared, cross_frag, transpose_B=True)
 # Epilogue: dist = c_sq - 2 * cross, argmin
-T.serial(k, BLOCK_K):
+for k in T.serial(BLOCK_K):
     dist = c_sq[k] - 2.0 * cross_frag[local_i, k]
     if dist < best_dist[local_i]:
         best_dist[local_i] = dist
