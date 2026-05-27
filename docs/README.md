@@ -43,7 +43,35 @@ Read in this order:
 5. `modal-workflow.md` — how to use Modal H100 (skip if using your own GPU)
 6. `debugging.md` — when something breaks
 
-Then follow the phase guides in order:
+## Warmup: TileLang Puzzles
+
+Before starting the phases, solve the first 7 [TileLang Puzzles](https://github.com/tile-ai/tilelang-puzzles). They teach the exact patterns you need for the FlashLib port:
+
+| Puzzle | What It Teaches | FlashLib Use |
+|--------|----------------|--------------|
+| 01-copy | `T.copy`, `T.Kernel`, basic structure | Every kernel loads data |
+| 02-vector-add | `T.Parallel`, elementwise ops | standard_scaler transform |
+| 03-outer-vec-add | 2D `T.Parallel`, broadcast | Distance matrix in KNN |
+| 04-backward-op | Multi-output kernels | — |
+| 05-reduce-sum | `T.Parallel` reduction | Mean/variance in standard_scaler |
+| 06-softmax | Multi-pass reduction + epilogue | KMeans argmin epilogue |
+| 07-scalar-flash-attn | Fused GEMM + epilogue | KMeans assign kernel |
+
+Puzzles 8-10 (GEMM, conv, dequant GEMM) are optional — they teach advanced patterns but the FlashLib port doesn't require them.
+
+```bash
+# Clone and solve
+git clone https://github.com/tile-ai/tilelang-puzzles
+cd tilelang-puzzles
+python3 puzzles/01-copy.py       # read the puzzle
+python3 ans/01-copy.py           # check the answer
+```
+
+After puzzles 1-7, Phase 1 (KMeans) will take 2-3 hours instead of 4-6.
+
+## Phase Guides
+
+Follow the phase guides in order:
 
 ```
 phase-0-setup.md          Infrastructure verification (no GPU needed)
