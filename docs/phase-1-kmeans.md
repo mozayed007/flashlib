@@ -118,8 +118,8 @@ def _build_assign_kernel(N, D, K, BLOCK_N, BLOCK_K):
         best_dist = T.alloc_fragment([BLOCK_N], dtype="float32")
         best_idx = T.alloc_fragment([BLOCK_N], dtype="int32")
 
-        # Get block index
-        pid_n = T.get_block_idx(0)
+        # Get block index (use T.Kernel context manager or T.get_block_binding)
+        pid_n = T.get_block_binding(0)
 
         # Initialize
         T.fill(best_dist, T.infinity("float32"))
@@ -183,9 +183,12 @@ The Lloyd loop:
 def tilelang_kmeans_Euclid(x, n_clusters, *, max_iters=100, tol=0.0,
                            init_centroids=None, verbose=False, **kwargs):
     """Full KMeans with TileLang assign + Triton centroid update."""
+    # For the Lloyd loop, delegate to the existing Triton implementation
+    # which handles the full assign-update cycle. Only the assign step
+    # is ported to TileLang.
     from flashlib.primitives.kmeans.triton.update import (
-        triton_lloyd_centroid_step_euclid,
         triton_centroid_finalize,
+        triton_lloyd_centroid_step_euclid,
     )
 
     B, N, D = x.shape
@@ -203,15 +206,15 @@ def tilelang_kmeans_Euclid(x, n_clusters, *, max_iters=100, tol=0.0,
         cluster_ids = tilelang_assign_euclid(x, centroids)
 
         # Update centroids using Triton (reuse existing)
-        new_centroids, converged = triton_lloyd_centroid_step_euclid(
-            x, cluster_ids, K,
-        )
-        centroids = triton_centroid_finalize(
-            new_centroids, cluster_ids, K,
+        new_centroids, cluster_ids, max_shift = triton_lloyd_centroid_step_euclid(
+            x, cluster_ids, centroids,
         )
 
-        if converged and tol > 0:
+        if max_shift.item() < tol:
             break
+
+    # TODO: study flashlib/primitives/kmeans/triton/update.py for the
+    # exact triton_centroid_finalize interface to finalize centroids.
 
     return cluster_ids, centroids, it + 1
 ```
